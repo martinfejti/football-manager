@@ -1,8 +1,6 @@
-package matches;
+package data;
 
-import teams.Player;
-
-public class GoalDto {
+public class Goal {
 
     private int id;
     private Player scorer;

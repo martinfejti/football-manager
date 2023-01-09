@@ -1,4 +1,4 @@
-package matches;
+package simulator;
 
 public record PreMatchData(
         double homeTeamForwardsAverage,

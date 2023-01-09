@@ -1,16 +1,19 @@
-package matches;
+package simulator;
 
-import teams.Player;
-import teams.Team;
+import data.Match;
+import data.Player;
+import data.Team;
 import util.ResultLogger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static data.PlayerPosition.*;
+
 public class MatchSimulation {
 
-    public static void simulateMatch(MatchDto match) {
+    public static void simulateMatch(Match match) {
 
         List<String> goalscorers = new ArrayList<>();
         
@@ -89,7 +92,7 @@ public class MatchSimulation {
         int numberOfForwards = 0;
         
         for (int i = 0; i < team.getListOfPlayers().size(); i++) {
-            if (team.getListOfPlayers().get(i).getPosition().equals("FOR")) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(FORWARD)) {
                 teamForwardsAvgSum += team.getListOfPlayers().get(i).getOverall();
                 numberOfForwards++;
             }
@@ -103,7 +106,7 @@ public class MatchSimulation {
         int numberOfMidfielders = 0;
         
         for (int i = 0; i < team.getListOfPlayers().size(); i++) {
-            if (team.getListOfPlayers().get(i).getPosition().equals("MID")) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(MIDFIELDER)) {
                 teamMidfieldersAvgSum += team.getListOfPlayers().get(i).getOverall();
                 numberOfMidfielders++;
             }
@@ -117,7 +120,7 @@ public class MatchSimulation {
         int numberOfDefenders = 0;
         
         for (int i = 0; i < team.getListOfPlayers().size(); i++) {
-            if (team.getListOfPlayers().get(i).getPosition().equals("DEF")) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(DEFENDER)) {
                 teamDefendersAvgSum += team.getListOfPlayers().get(i).getOverall();
                 numberOfDefenders++;
             }
@@ -174,21 +177,21 @@ public class MatchSimulation {
             if (valueForDecidingWhichPositionHasTheChance <= 0.6) {
                 // A striker will have the chance
                 for (int j = 0; j < team.getListOfPlayers().size(); j++) {
-                    if (team.getListOfPlayers().get(j).getPosition().equals("FOR")) {
+                    if (team.getListOfPlayers().get(j).getPosition().equals(FORWARD)) {
                         playersToHaveChance.add(team.getListOfPlayers().get(j));
                     }
                 }
             } else if (valueForDecidingWhichPositionHasTheChance > 0.6 && valueForDecidingWhichPositionHasTheChance <= 0.9) {
                 // A midfielder will have the chance
                 for (int j = 0; j < team.getListOfPlayers().size(); j++) {
-                    if (team.getListOfPlayers().get(j).getPosition().equals("MID")) {
+                    if (team.getListOfPlayers().get(j).getPosition().equals(MIDFIELDER)) {
                         playersToHaveChance.add(team.getListOfPlayers().get(j));
                     }
                 }
             } else if (valueForDecidingWhichPositionHasTheChance > 0.9) {
                 // A defender will have the chance
                 for (int j = 0; j < team.getListOfPlayers().size(); j++) {
-                    if (team.getListOfPlayers().get(j).getPosition().equals("DEF")) {
+                    if (team.getListOfPlayers().get(j).getPosition().equals(DEFENDER)) {
                         playersToHaveChance.add(team.getListOfPlayers().get(j));
                     }
                 }
@@ -251,7 +254,7 @@ public class MatchSimulation {
     private static double calculateKeeperSavingBonus(Team homeTeam) {
         Player keeper = new Player();
         for (int i = 0; i < homeTeam.getListOfPlayers().size(); i++) {
-            if (homeTeam.getListOfPlayers().get(i).getPosition().equals("GKP")) {
+            if (homeTeam.getListOfPlayers().get(i).getPosition().equals(GOALKEEPER)) {
                 keeper = homeTeam.getListOfPlayers().get(i);
                 System.out.println("Kapus neve: " + keeper.getPlayerName());                
             }

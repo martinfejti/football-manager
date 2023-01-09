@@ -1,10 +1,10 @@
 package util;
 
-import matches.MatchResultInfo;
-import matches.PreMatchData;
-import seasons.Season;
-import teams.Player;
-import teams.Team;
+import simulator.MatchResultInfo;
+import simulator.PreMatchData;
+import data.Season;
+import data.Player;
+import data.Team;
 
 import java.util.Comparator;
 

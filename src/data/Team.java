@@ -1,4 +1,6 @@
-package teams;
+package data;
+
+import data.Player;
 
 import java.util.List;
 

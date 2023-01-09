@@ -1,10 +1,10 @@
-package teams;
+package data;
 
 public class Player {
 
     private String playerName;
     
-    private String position;
+    private PlayerPosition position;
     
     private double overall;
     
@@ -13,7 +13,7 @@ public class Player {
     
     private int goals;
     
-    public Player(String playerName, String position, double overall, double chanceOfScoringFromBigOpportunity,
+    public Player(String playerName, PlayerPosition position, double overall, double chanceOfScoringFromBigOpportunity,
             double chanceOfScoringFromSmallOpportunity) {
         super();
         this.playerName = playerName;
@@ -35,11 +35,11 @@ public class Player {
         this.playerName = playerName;
     }
 
-    public String getPosition() {
+    public PlayerPosition getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(PlayerPosition position) {
         this.position = position;
     }
 

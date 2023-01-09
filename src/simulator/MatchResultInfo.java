@@ -1,4 +1,4 @@
-package matches;
+package simulator;
 
 import java.util.List;
 

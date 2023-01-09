@@ -1,11 +1,6 @@
-package matches;
+package data;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import teams.Team;
-
-public class MatchDto {
+public class Match {
 
     private int id;
     private int matchweekNumber;
@@ -19,7 +14,7 @@ public class MatchDto {
     private int homeTeamSmallChances;
     private int awayTeamSmallChances;
     
-    public MatchDto(int matchweekNumber, Team homeTeam, Team awayTeam) {
+    public Match(int matchweekNumber, Team homeTeam, Team awayTeam) {
         super();
         this.matchweekNumber = matchweekNumber;
         this.homeTeam = homeTeam;
