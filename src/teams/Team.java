@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Team {
 
-    private int points = 0;
+    private int points;
     private String name;
     private List<Player> listOfPlayers;
     private int scoredGoals;

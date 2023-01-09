@@ -10,17 +10,23 @@ public class Season {
 
     private int id;
     private String year;
-    private static List<MatchDto> matches; // olyan generikus tipus ami figyelembe veszi a sorrendet egy attributum alapjan
+    private List<Team> teamList;
+    private List<MatchDto> matches; // olyan generikus tipus ami figyelembe veszi a sorrendet egy attributum alapjan
     
-    public Season(String year) {
+    public Season(String year, List<Team> teamList) {
         this.year = year;
-        matches = new ArrayList<>();
+        this.teamList = teamList;
+        this.matches = createSeasonWith20Teams(teamList.get(0), teamList.get(1), teamList.get(2), teamList.get(3),
+                teamList.get(4), teamList.get(5), teamList.get(6), teamList.get(7), teamList.get(8), teamList.get(9),
+                teamList.get(10), teamList.get(11), teamList.get(12), teamList.get(13), teamList.get(14),
+                teamList.get(15), teamList.get(16), teamList.get(17), teamList.get(18), teamList.get(19)
+        );
     }
     
-    public static Season createSeasonWith4Teams(String year, Team team1, Team team2, Team team3, Team team4) {
-        
-        Season season = new Season(year);
-        
+    public static List<MatchDto> createSeasonWith4Teams(String year, Team team1, Team team2, Team team3, Team team4) {
+
+        List<MatchDto> matches = new ArrayList<>();
+
         // create week 1
         matches.add(new MatchDto(1, team1, team2));
         matches.add(new MatchDto(1, team4, team3));
@@ -45,15 +51,17 @@ public class Season {
         matches.add(new MatchDto(6, team4, team1));
         matches.add(new MatchDto(6, team3, team2));
         
-        return season;
-        
-        
+        return matches;
     }
     
-    public static Season createSeasonWith20Teams(String year, Team team1, Team team2, Team team3, Team team4, Team team5, Team team6, Team team7, Team team8, Team team9, Team team10, Team team11,
-            Team team12, Team team13, Team team14, Team team15, Team team16, Team team17, Team team18, Team team19, Team team20) {
-        Season season = new Season(year);
-        
+    public static List<MatchDto> createSeasonWith20Teams(
+            Team team1, Team team2, Team team3, Team team4, Team team5, Team team6, Team team7, Team team8, Team team9,
+            Team team10, Team team11, Team team12, Team team13, Team team14, Team team15, Team team16, Team team17,
+            Team team18, Team team19, Team team20
+    ) {
+
+        List<MatchDto> matches = new ArrayList<>();
+
         // create week 1
         matches.add(new MatchDto(1, team20, team18));
         matches.add(new MatchDto(1, team11, team13));
@@ -510,7 +518,7 @@ public class Season {
         matches.add(new MatchDto(38, team14, team2));
         matches.add(new MatchDto(38, team18, team15));
         
-        return season;
+        return matches;
     }
 
     public int getId() {
@@ -529,12 +537,20 @@ public class Season {
         this.year = year;
     }
 
-    public static List<MatchDto> getMatches() {
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
+
+    public List<MatchDto> getMatches() {
         return matches;
     }
 
-    public static void setMatches(List<MatchDto> matches) {
-        Season.matches = matches;
+    public void setMatches(List<MatchDto> matches) {
+        this.matches = matches;
     }
     
     
