@@ -2,6 +2,7 @@ package matches;
 
 import teams.Player;
 import teams.Team;
+import util.ResultLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,54 +18,47 @@ public class MatchSimulation {
         double homeTeamForwardsAvg = getTeamForwardsAvg(match.getHomeTeam());
         double homeTeamMidfieldersAvg = getTeamMidfieldersAvg(match.getHomeTeam());
         double homeTeamDefendersAvg = getTeamDefendersAvg(match.getHomeTeam());
-        double homeTeamAvg = (homeTeamForwardsAvg + homeTeamMidfieldersAvg + homeTeamDefendersAvg) / 3; // doesnt contain keeper!!! later...
+        double homeTeamAvg = (homeTeamForwardsAvg + homeTeamMidfieldersAvg + homeTeamDefendersAvg) / 3; // TODO doesnt contain keeper!!! later...
         
         double awayTeamForwardsAvg = getTeamForwardsAvg(match.getAwayTeam());
         double awayTeamMidfieldersAvg = getTeamMidfieldersAvg(match.getAwayTeam());
         double awayTeamDefendersAvg = getTeamDefendersAvg(match.getAwayTeam());
-        double awayTeamAvg = (awayTeamForwardsAvg + awayTeamMidfieldersAvg + awayTeamDefendersAvg)/3;
+        double awayTeamAvg = (awayTeamForwardsAvg + awayTeamMidfieldersAvg + awayTeamDefendersAvg) / 3;
         
-        System.out.println("\nHomeTeam Attributes: ");
-        System.out.println("Forward AVG: " + homeTeamForwardsAvg);
-        System.out.println("Midfielders AVG: " + homeTeamMidfieldersAvg);
-        System.out.println("Defenders AVG: " + homeTeamDefendersAvg);
-        System.out.println("OVERALL AVG: " + homeTeamAvg);
-        
-        System.out.println("\nAwayTeam Attributes: ");
-        System.out.println("Forward AVG: " + awayTeamForwardsAvg);
-        System.out.println("Midfielders AVG: " + awayTeamMidfieldersAvg);
-        System.out.println("Defenders AVG: " + awayTeamDefendersAvg);
-        System.out.println("OVERALL AVG: " + awayTeamAvg);
-        
-        // Keepers
+        // Keeper bonuses
         double homeKeeperSavingBonus = calculateKeeperSavingBonus(match.getHomeTeam());
         double awayKeeperSavingBonus = calculateKeeperSavingBonus(match.getAwayTeam());
-        System.out.println("Hazai kapus bónusz: " + homeKeeperSavingBonus);
-        System.out.println("Vendég kapus bónusz: " + awayKeeperSavingBonus);
-        
+
+        // Chances
         int numberOfBigHomeTeamChances = calculateNumberOfBigChances(homeTeamAvg, awayTeamAvg);
         int numberOfSmallHomeTeamChances = calculateNumberOfSmallChances(homeTeamAvg, awayTeamAvg);
-        
         int numberOfBigAwayTeamChances = calculateNumberOfBigChances(awayTeamAvg, homeTeamAvg);
         int numberOfSmallAwayTeamChances = calculateNumberOfSmallChances(awayTeamAvg, homeTeamAvg);
         
-        System.out.println("HomeTeam big chances: " + numberOfBigHomeTeamChances + ", small chances: " + numberOfSmallHomeTeamChances);
-        System.out.println("AwayTeam big chances: " + numberOfBigAwayTeamChances + ", small chances: " + numberOfSmallAwayTeamChances);
+        ResultLogger.logPreMatchData(
+                new PreMatchData(
+                homeTeamForwardsAvg, homeTeamMidfieldersAvg, homeTeamDefendersAvg, homeTeamAvg, awayTeamForwardsAvg,
+                awayTeamMidfieldersAvg, awayTeamDefendersAvg, awayTeamAvg, homeKeeperSavingBonus, awayKeeperSavingBonus,
+                numberOfBigHomeTeamChances, numberOfSmallHomeTeamChances, numberOfBigAwayTeamChances, numberOfSmallAwayTeamChances
+                )
+        );
         
-        // Handle Chances
+        // Simulate chances
         int numberOfHomeTeamGoals = simulateChances(numberOfBigHomeTeamChances, match.getHomeTeam(), true, homeKeeperSavingBonus, goalscorers); 
         numberOfHomeTeamGoals += simulateChances(numberOfSmallHomeTeamChances, match.getHomeTeam(), false, homeKeeperSavingBonus, goalscorers);
         
         int numberOfAwayTeamGoals = simulateChances(numberOfBigAwayTeamChances, match.getAwayTeam(), true, awayKeeperSavingBonus, goalscorers);
         numberOfAwayTeamGoals += simulateChances(numberOfSmallAwayTeamChances, match.getAwayTeam(), false, awayKeeperSavingBonus, goalscorers);
-        
-        System.out.println("\nEredmény: " + match.getHomeTeam().getName() + " " + numberOfHomeTeamGoals + " - " + match.getAwayTeam().getName() + " " + numberOfAwayTeamGoals);
-        System.out.println("Gólszerzõk: ");
-        for (int i = 0; i < goalscorers.size(); i++) {
-            System.out.println(goalscorers.get(i));
-        }
-        
-        // pontok kezelese
+
+        ResultLogger.logMatchResultInfo(
+                new MatchResultInfo(
+                        match.getHomeTeam().getName(), numberOfHomeTeamGoals,
+                        match.getAwayTeam().getName(), numberOfAwayTeamGoals,
+                        goalscorers
+                )
+        );
+
+        // Handle points
         if (numberOfHomeTeamGoals > numberOfAwayTeamGoals) {
             match.getHomeTeam().addThreePoints();
         } else if (numberOfAwayTeamGoals > numberOfHomeTeamGoals) {
@@ -74,7 +68,7 @@ public class MatchSimulation {
             match.getAwayTeam().addOnePoint();
         }
         
-        // golok kezelese
+        // Handle goals
         match.setHomeTeamGoals(numberOfHomeTeamGoals);
         match.setAwayTeamGoals(numberOfAwayTeamGoals);
         
@@ -84,7 +78,7 @@ public class MatchSimulation {
         match.getAwayTeam().setScoredGoals(numberOfAwayTeamGoals);
         match.getAwayTeam().setConcededGoals(numberOfHomeTeamGoals);
         
-        // meccsek novelese
+        // Increase match numbers
         match.getHomeTeam().increaseMatchedPlayed();
         match.getAwayTeam().increaseMatchedPlayed();
 
@@ -130,29 +124,6 @@ public class MatchSimulation {
         }
         
         return teamDefendersAvgSum/numberOfDefenders;
-    }
-    
-    private static int calculateNumberOfBigChances(double forAvg, double midAvg, double defAvg) {
-        
-        int numberOfBigChances = 1;
-        
-        if (forAvg >= 90) {
-            numberOfBigChances += 2;
-        } else if (forAvg > 80 && forAvg < 90) {
-            numberOfBigChances += 1;
-        }
-        
-        if (midAvg >= 90) {
-            numberOfBigChances += 2;
-        } else if (midAvg > 80 && midAvg < 90) {
-            numberOfBigChances += 1;
-        }
-        
-        if (defAvg >= 95) {
-            numberOfBigChances += 1;
-        }
-
-        return numberOfBigChances;
     }
     
     // dinamikusabb megoldas
@@ -233,7 +204,8 @@ public class MatchSimulation {
         
         return numberOfGoals;
     }
-    
+
+    // TODO Handle sysouts if they are still needed in the later stages
     private static boolean isGoalScored(List<Player> playersToHaveChance, Team team, boolean isBigChance, double keeperSavingBonus, List<String> goalscorers) {
         int numberOfPlayersWhoHaveChance = playersToHaveChance.size();
         Random ran = new Random();
