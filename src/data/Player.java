@@ -10,6 +10,12 @@ public class Player {
     
     private double chanceOfScoringFromBigOpportunity;
     private double chanceOfScoringFromSmallOpportunity;
+    private int stamina;
+    private boolean injured;
+    private int matchesUntilComesBackFromInjury;
+    private int numberOfYellowCards;
+    private int numberOfRedCards;
+    private boolean excluded;
     
     private int goals;
     
@@ -22,6 +28,12 @@ public class Player {
         this.chanceOfScoringFromBigOpportunity = chanceOfScoringFromBigOpportunity;
         this.chanceOfScoringFromSmallOpportunity = chanceOfScoringFromSmallOpportunity;
         this.goals = 0;
+        this.stamina = 100;
+        this.injured = false;
+        this.matchesUntilComesBackFromInjury = 0;
+        this.numberOfYellowCards = 0;
+        this.numberOfRedCards = 0;
+        this.excluded = false;
     }
     
     public Player() {
@@ -74,6 +86,55 @@ public class Player {
     public void increaseGoals() {
         this.goals += 1;
     }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+
+    public boolean isInjured() {
+        return injured;
+    }
+
+    public void setInjured(boolean injured) {
+        this.injured = injured;
+    }
+
+    public int getMatchesUntilComesBackFromInjury() {
+        return matchesUntilComesBackFromInjury;
+    }
+
+    public void setMatchesUntilComesBackFromInjury(int matchesUntilComesBackFromInjury) {
+        this.matchesUntilComesBackFromInjury = matchesUntilComesBackFromInjury;
+    }
+
+    public int getNumberOfYellowCards() {
+        return numberOfYellowCards;
+    }
+
+    public void increaseNumberOfYellowCards() {
+        this.numberOfYellowCards++;
+    }
+
+    public int getNumberOfRedCards() {
+        return numberOfRedCards;
+    }
+
+    public void increaseNumberOfRedCards() {
+        this.numberOfRedCards++;
+    }
+
+    public boolean isExcluded() {
+        return excluded;
+    }
+
+    public void setExcluded(boolean excluded) {
+        this.excluded = excluded;
+    }
+
 }
 
 

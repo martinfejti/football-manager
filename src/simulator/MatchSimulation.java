@@ -61,6 +61,18 @@ public class MatchSimulation {
                 )
         );
 
+        // Handle fatigue
+        // handleFatigue(match.getHomeTeam().getListOfPlayers());
+        // handleFatigue(match.getAwayTeam().getListOfPlayers());
+
+        // Handle injuries
+        // handleInjuries(match.getHomeTeam().getListOfPlayers());
+        // handleInjuries(match.getAwayTeam().getListOfPlayers());
+
+        // Handle cards
+        handleYellowCards(match.getHomeTeam().getListOfPlayers());
+        handleYellowCards(match.getAwayTeam().getListOfPlayers());
+
         // Handle points
         if (numberOfHomeTeamGoals > numberOfAwayTeamGoals) {
             match.getHomeTeam().addThreePoints();
@@ -261,6 +273,56 @@ public class MatchSimulation {
         }
 
         return keeper.getOverall()/200; // egyelore jo igy sztem, 90nes kapusnal ziccer 0,45, kis helyzet 0,67 korul van
+    }
+
+    /**
+     * Decreases player's stamina by a random number between 10 and 30
+     */
+    private static void handleFatigue(List<Player> playerList) {
+
+        for (Player player : playerList) {
+            int randomNumber = (int) (Math.random() * (30 - 10)) + 10;
+            player.setStamina(player.getStamina() - randomNumber);
+        }
+    }
+
+    /**
+     * Decides if a player injured during match and how many matches he needs to miss
+     */
+    private static void handleInjuries(List<Player> playerList) {
+
+        for (Player player : playerList) {
+
+            if (Math.random() <= 0.01) { // too many injuries happened in case of 0.04
+                player.setInjured(true);
+
+                double injuryLengthRandom = Math.random();
+                if (injuryLengthRandom >= 0.9) {
+                    player.setMatchesUntilComesBackFromInjury(5);
+                } else if (injuryLengthRandom >= 0.75) {
+                    player.setMatchesUntilComesBackFromInjury(4);
+                } else if (injuryLengthRandom >= 0.5) {
+                    player.setMatchesUntilComesBackFromInjury(3);
+                } else if (injuryLengthRandom >= 0.2) {
+                    player.setMatchesUntilComesBackFromInjury(2);
+                } else {
+                    player.setMatchesUntilComesBackFromInjury(1);
+                }
+            }
+        }
+    }
+
+    /**
+     * Decides if a player gets a yellow card and increases his yellow card number if needed
+     * The chances of getting a card depends on the position
+     */
+    private static void handleYellowCards(List<Player> playerList) {
+
+        for (Player player : playerList) {
+            if (Math.random() <= 0.15) {
+                // TODO make reception depending on position and increase the number of cards for the given player
+            }
+        }
     }
 
 }

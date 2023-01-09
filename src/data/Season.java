@@ -13,14 +13,17 @@ public class Season {
     public Season(String year, List<Team> teamList) {
         this.year = year;
         this.teamList = teamList;
+        /*
         this.matchList = createSeasonWith20Teams(teamList.get(0), teamList.get(1), teamList.get(2), teamList.get(3),
                 teamList.get(4), teamList.get(5), teamList.get(6), teamList.get(7), teamList.get(8), teamList.get(9),
                 teamList.get(10), teamList.get(11), teamList.get(12), teamList.get(13), teamList.get(14),
                 teamList.get(15), teamList.get(16), teamList.get(17), teamList.get(18), teamList.get(19)
         );
+         */
+        this.matchList = createSeasonWith4Teams(teamList.get(0), teamList.get(1), teamList.get(2), teamList.get(3));
     }
     
-    public static List<Match> createSeasonWith4Teams(String year, Team team1, Team team2, Team team3, Team team4) {
+    public static List<Match> createSeasonWith4Teams(Team team1, Team team2, Team team3, Team team4) {
 
         List<Match> matches = new ArrayList<>();
 
