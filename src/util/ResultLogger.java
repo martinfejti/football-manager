@@ -1,5 +1,6 @@
 package util;
 
+import data.PlayerPosition;
 import simulator.MatchResultInfo;
 import simulator.PreMatchData;
 import data.Season;
@@ -7,6 +8,8 @@ import data.Player;
 import data.Team;
 
 import java.util.Comparator;
+
+import static data.PlayerPosition.DEFENDER;
 
 public class ResultLogger {
 
@@ -68,8 +71,24 @@ public class ResultLogger {
                 .flatMap(team -> team.getListOfPlayers().stream())
                 .sorted(Comparator.comparing(Player::getGoals).reversed())
                 .filter(player -> player.getGoals() > 0)
-                .filter(player -> player.getPosition().equals("DEF"))
+                .filter(player -> player.getPosition() == DEFENDER)
                 .forEach(player -> System.out.println(player.getPlayerName() + ": " + player.getGoals()));
+
+        System.out.println("\nSárga lapok:");
+        season.getTeamList()
+                .stream()
+                .flatMap(team -> team.getListOfPlayers().stream())
+                .sorted(Comparator.comparing(Player::getNumberOfYellowCards).reversed())
+                .filter(player -> player.getNumberOfYellowCards() > 0)
+                .forEach(player -> System.out.println(player.getPlayerName() + ": " + player.getNumberOfYellowCards()));
+
+        System.out.println("\nPiros lapok:");
+        season.getTeamList()
+                .stream()
+                .flatMap(team -> team.getListOfPlayers().stream())
+                .sorted(Comparator.comparing(Player::getNumberOfRedCards).reversed())
+                .filter(player -> player.getNumberOfRedCards() > 0)
+                .forEach(player -> System.out.println(player.getPlayerName() + ": " + player.getNumberOfRedCards()));
     }
 
 }

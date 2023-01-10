@@ -62,16 +62,18 @@ public class MatchSimulation {
         );
 
         // Handle fatigue
-        // handleFatigue(match.getHomeTeam().getListOfPlayers());
-        // handleFatigue(match.getAwayTeam().getListOfPlayers());
+        handleFatigue(match.getHomeTeam().getListOfPlayers());
+        handleFatigue(match.getAwayTeam().getListOfPlayers());
 
         // Handle injuries
-        // handleInjuries(match.getHomeTeam().getListOfPlayers());
-        // handleInjuries(match.getAwayTeam().getListOfPlayers());
+        handleInjuries(match.getHomeTeam().getListOfPlayers());
+        handleInjuries(match.getAwayTeam().getListOfPlayers());
 
         // Handle cards
         handleYellowCards(match.getHomeTeam().getListOfPlayers());
         handleYellowCards(match.getAwayTeam().getListOfPlayers());
+        handleRedCards(match.getHomeTeam().getListOfPlayers());
+        handleRedCards(match.getAwayTeam().getListOfPlayers());
 
         // Handle points
         if (numberOfHomeTeamGoals > numberOfAwayTeamGoals) {
@@ -296,6 +298,7 @@ public class MatchSimulation {
             if (Math.random() <= 0.01) { // too many injuries happened in case of 0.04
                 player.setInjured(true);
 
+                System.out.println("SÉRÜLÉS:" + player.getPlayerName());
                 double injuryLengthRandom = Math.random();
                 if (injuryLengthRandom >= 0.9) {
                     player.setMatchesUntilComesBackFromInjury(5);
@@ -319,8 +322,52 @@ public class MatchSimulation {
     private static void handleYellowCards(List<Player> playerList) {
 
         for (Player player : playerList) {
-            if (Math.random() <= 0.15) {
-                // TODO make reception depending on position and increase the number of cards for the given player
+
+            boolean getsYellowCard = false;
+            double yellowCardChance = Math.random();
+
+            if (player.getPosition() == GOALKEEPER && yellowCardChance < 0.05) {
+                getsYellowCard = true;
+            } else if (player.getPosition() == DEFENDER && yellowCardChance < 0.15) {
+                getsYellowCard = true;
+            } else if (player.getPosition() == MIDFIELDER && yellowCardChance < 0.05) {
+                getsYellowCard = true;
+            } else if (player.getPosition() == FORWARD && yellowCardChance < 0.025) {
+                getsYellowCard = true;
+            }
+
+            if (getsYellowCard) {
+                player.increaseNumberOfYellowCards();
+                System.out.println("SÁRGA LAP: " + player.getPlayerName());
+            }
+        }
+    }
+
+    /**
+     * Decides if a player gets a red card and increases his red card number if needed
+     * The chances of getting a card depends on the position
+     */
+    private static void handleRedCards(List<Player> playerList) {
+
+        for (Player player : playerList) {
+
+            boolean getsRedCard = false;
+            double redCardChance = Math.random();
+
+            if (player.getPosition() == GOALKEEPER && redCardChance < 0.003) {
+                getsRedCard = true;
+            } else if (player.getPosition() == DEFENDER && redCardChance < 0.01) {
+                getsRedCard = true;
+            } else if (player.getPosition() == MIDFIELDER && redCardChance < 0.005) {
+                getsRedCard = true;
+            } else if (player.getPosition() == FORWARD && redCardChance < 0.0025) {
+                getsRedCard = true;
+            }
+
+            if (getsRedCard) {
+                player.increaseNumberOfRedCards();
+                player.setExcluded(true);
+                System.out.println("KIÁLLÍTÁS: " + player.getPlayerName());
             }
         }
     }
