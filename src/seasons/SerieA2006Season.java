@@ -10,6 +10,7 @@ import static data.PlayerPosition.*;
 
 public class SerieA2006Season {
 
+        /*
     public static Season create() {
         return new Season("Serie A 2005-2006", Arrays.asList(
                 new Team("Milan", Arrays.asList(
@@ -274,5 +275,7 @@ public class SerieA2006Season {
                 ))
         ));
     }
+
+         */
 
 }

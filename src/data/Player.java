@@ -5,6 +5,7 @@ public class Player {
     private String playerName;
     
     private PlayerPosition position;
+    private SpecificPlayerPosition specificPlayerPosition;
     
     private double overall;
     
@@ -16,14 +17,17 @@ public class Player {
     private int numberOfYellowCards;
     private int numberOfRedCards;
     private boolean excluded;
+    private int numberOfMatches;
+    private boolean inStartingLineup;
     
     private int goals;
     
-    public Player(String playerName, PlayerPosition position, double overall, double chanceOfScoringFromBigOpportunity,
+    public Player(String playerName, PlayerPosition position, SpecificPlayerPosition specificPlayerPosition, double overall, double chanceOfScoringFromBigOpportunity,
             double chanceOfScoringFromSmallOpportunity) {
         super();
         this.playerName = playerName;
         this.position = position;
+        this.specificPlayerPosition = specificPlayerPosition;
         this.overall = overall;
         this.chanceOfScoringFromBigOpportunity = chanceOfScoringFromBigOpportunity;
         this.chanceOfScoringFromSmallOpportunity = chanceOfScoringFromSmallOpportunity;
@@ -34,6 +38,8 @@ public class Player {
         this.numberOfYellowCards = 0;
         this.numberOfRedCards = 0;
         this.excluded = false;
+        this.numberOfMatches = 0;
+        this.inStartingLineup = false;
     }
     
     public Player() {
@@ -133,6 +139,35 @@ public class Player {
 
     public void setExcluded(boolean excluded) {
         this.excluded = excluded;
+    }
+
+    public SpecificPlayerPosition getSpecificPlayerPosition() {
+        return specificPlayerPosition;
+    }
+
+    public void setSpecificPlayerPosition(SpecificPlayerPosition specificPlayerPosition) {
+        this.specificPlayerPosition = specificPlayerPosition;
+    }
+
+    public int getNumberOfMatches() {
+        return numberOfMatches;
+    }
+
+    public void increaseNumberOfMatches() {
+        numberOfMatches++;
+    }
+
+    public boolean isInStartingLineup() {
+        return inStartingLineup;
+    }
+
+    public void setInStartingLineup(boolean inStartingLineup) {
+        this.inStartingLineup = inStartingLineup;
+    }
+
+    // TODO kiemelni a resultloggerbe
+    public void log() {
+        System.out.println(playerName + ",\t M: " + numberOfMatches + ",\t G: " + goals + ",\t S: " + stamina);
     }
 
 }

@@ -89,6 +89,12 @@ public class ResultLogger {
                 .sorted(Comparator.comparing(Player::getNumberOfRedCards).reversed())
                 .filter(player -> player.getNumberOfRedCards() > 0)
                 .forEach(player -> System.out.println(player.getPlayerName() + ": " + player.getNumberOfRedCards()));
+
+        System.out.println("\nJátékosstatisztika:");
+        season.getTeamList()
+                .stream()
+                .flatMap(team -> team.getListOfPlayers().stream())
+                .forEach(Player::log);
     }
 
 }

@@ -114,5 +114,5 @@ public class Match {
     public void setAwayTeamSmallChances(int awayTeamSmallChances) {
         this.awayTeamSmallChances = awayTeamSmallChances;
     }
-    
+
 }

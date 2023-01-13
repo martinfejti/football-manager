@@ -9,14 +9,16 @@ public class Team {
     private int points;
     private String name;
     private List<Player> listOfPlayers;
+    private TeamFormation formation;
     private int scoredGoals;
     private int concededGoals;
     private int matchesPlayed;
     
-    public Team(String name, List<Player> listOfPlayers) {
+    public Team(String name, TeamFormation formation, List<Player> listOfPlayers) {
         this.points = 0;
         this.name = name;
         this.listOfPlayers = listOfPlayers;
+        this.formation = formation;
         this.scoredGoals = 0;
         this.concededGoals = 0;
         this.matchesPlayed = 0;
@@ -85,6 +87,14 @@ public class Team {
     
     public void increaseMatchedPlayed() {
         this.matchesPlayed++;
+    }
+
+    public TeamFormation getFormation() {
+        return formation;
+    }
+
+    public void setFormation(TeamFormation formation) {
+        this.formation = formation;
     }
     
     

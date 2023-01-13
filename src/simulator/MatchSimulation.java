@@ -16,6 +16,18 @@ public class MatchSimulation {
     public static void simulateMatch(Match match) {
 
         List<String> goalscorers = new ArrayList<>();
+
+        PreMatchLogic.selectStartingLineups(match);
+        System.out.println("\nHome starting 11:");
+        match.getHomeTeam().getListOfPlayers()
+                .stream()
+                .filter(Player::isInStartingLineup)
+                .forEach(player -> System.out.println(player.getPlayerName()));
+        System.out.println("\nAway starting 11:");
+        match.getAwayTeam().getListOfPlayers()
+                .stream()
+                .filter(Player::isInStartingLineup)
+                .forEach(player -> System.out.println(player.getPlayerName()));
         
         //Collect data for the match
         double homeTeamForwardsAvg = getTeamForwardsAvg(match.getHomeTeam());
@@ -40,14 +52,14 @@ public class MatchSimulation {
         
         ResultLogger.logPreMatchData(
                 new PreMatchData(
-                homeTeamForwardsAvg, homeTeamMidfieldersAvg, homeTeamDefendersAvg, homeTeamAvg, awayTeamForwardsAvg,
-                awayTeamMidfieldersAvg, awayTeamDefendersAvg, awayTeamAvg, homeKeeperSavingBonus, awayKeeperSavingBonus,
-                numberOfBigHomeTeamChances, numberOfSmallHomeTeamChances, numberOfBigAwayTeamChances, numberOfSmallAwayTeamChances
+                    homeTeamForwardsAvg, homeTeamMidfieldersAvg, homeTeamDefendersAvg, homeTeamAvg, awayTeamForwardsAvg,
+                    awayTeamMidfieldersAvg, awayTeamDefendersAvg, awayTeamAvg, homeKeeperSavingBonus, awayKeeperSavingBonus,
+                    numberOfBigHomeTeamChances, numberOfSmallHomeTeamChances, numberOfBigAwayTeamChances, numberOfSmallAwayTeamChances
                 )
         );
         
         // Simulate chances
-        int numberOfHomeTeamGoals = simulateChances(numberOfBigHomeTeamChances, match.getHomeTeam(), true, homeKeeperSavingBonus, goalscorers); 
+        int numberOfHomeTeamGoals = simulateChances(numberOfBigHomeTeamChances, match.getHomeTeam(), true, homeKeeperSavingBonus, goalscorers);
         numberOfHomeTeamGoals += simulateChances(numberOfSmallHomeTeamChances, match.getHomeTeam(), false, homeKeeperSavingBonus, goalscorers);
         
         int numberOfAwayTeamGoals = simulateChances(numberOfBigAwayTeamChances, match.getAwayTeam(), true, awayKeeperSavingBonus, goalscorers);
@@ -98,15 +110,19 @@ public class MatchSimulation {
         // Increase match numbers
         match.getHomeTeam().increaseMatchedPlayed();
         match.getAwayTeam().increaseMatchedPlayed();
+        increasesPlayersMatchNumber(match.getHomeTeam().getListOfPlayers());
+        increasesPlayersMatchNumber(match.getAwayTeam().getListOfPlayers());
 
     }
 
     private static double getTeamForwardsAvg(Team team) {
+
         double teamForwardsAvgSum = 0;
         int numberOfForwards = 0;
-        
+
+        // TODO use enhanced loops
         for (int i = 0; i < team.getListOfPlayers().size(); i++) {
-            if (team.getListOfPlayers().get(i).getPosition().equals(FORWARD)) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(FORWARD) && team.getListOfPlayers().get(i).isInStartingLineup()) {
                 teamForwardsAvgSum += team.getListOfPlayers().get(i).getOverall();
                 numberOfForwards++;
             }
@@ -116,11 +132,12 @@ public class MatchSimulation {
     }
     
     private static double getTeamMidfieldersAvg(Team team) {
+
         double teamMidfieldersAvgSum = 0;
         int numberOfMidfielders = 0;
         
         for (int i = 0; i < team.getListOfPlayers().size(); i++) {
-            if (team.getListOfPlayers().get(i).getPosition().equals(MIDFIELDER)) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(MIDFIELDER) && team.getListOfPlayers().get(i).isInStartingLineup()) {
                 teamMidfieldersAvgSum += team.getListOfPlayers().get(i).getOverall();
                 numberOfMidfielders++;
             }
@@ -130,11 +147,12 @@ public class MatchSimulation {
     }
     
     private static double getTeamDefendersAvg(Team team) {
+
         double teamDefendersAvgSum = 0;
         int numberOfDefenders = 0;
         
         for (int i = 0; i < team.getListOfPlayers().size(); i++) {
-            if (team.getListOfPlayers().get(i).getPosition().equals(DEFENDER)) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(DEFENDER) && team.getListOfPlayers().get(i).isInStartingLineup()) {
                 teamDefendersAvgSum += team.getListOfPlayers().get(i).getOverall();
                 numberOfDefenders++;
             }
@@ -165,6 +183,7 @@ public class MatchSimulation {
 
     // dinamikusabb megoldas
     private static int calculateNumberOfSmallChances(double homeTeamAvg, double awayTeamAvg) {
+
         int numberOfSmalllChances = 2;
         
         if (Math.abs(homeTeamAvg - awayTeamAvg) <= 5) {
@@ -183,6 +202,7 @@ public class MatchSimulation {
     }
     
     private static int simulateChances(int numberOfChances, Team team, boolean isBigChance, double keeperSavingBonus, List<String> goalscorers) {
+
         List<Player> playersToHaveChance = new ArrayList<>();
         int numberOfGoals = 0;
         
@@ -191,28 +211,28 @@ public class MatchSimulation {
             if (valueForDecidingWhichPositionHasTheChance <= 0.6) {
                 // A striker will have the chance
                 for (int j = 0; j < team.getListOfPlayers().size(); j++) {
-                    if (team.getListOfPlayers().get(j).getPosition().equals(FORWARD)) {
+                    if (team.getListOfPlayers().get(j).getPosition().equals(FORWARD) && team.getListOfPlayers().get(j).isInStartingLineup()) {
                         playersToHaveChance.add(team.getListOfPlayers().get(j));
                     }
                 }
             } else if (valueForDecidingWhichPositionHasTheChance > 0.6 && valueForDecidingWhichPositionHasTheChance <= 0.9) {
                 // A midfielder will have the chance
                 for (int j = 0; j < team.getListOfPlayers().size(); j++) {
-                    if (team.getListOfPlayers().get(j).getPosition().equals(MIDFIELDER)) {
+                    if (team.getListOfPlayers().get(j).getPosition().equals(MIDFIELDER) && team.getListOfPlayers().get(j).isInStartingLineup()) {
                         playersToHaveChance.add(team.getListOfPlayers().get(j));
                     }
                 }
             } else if (valueForDecidingWhichPositionHasTheChance > 0.9) {
                 // A defender will have the chance
                 for (int j = 0; j < team.getListOfPlayers().size(); j++) {
-                    if (team.getListOfPlayers().get(j).getPosition().equals(DEFENDER)) {
+                    if (team.getListOfPlayers().get(j).getPosition().equals(DEFENDER) && team.getListOfPlayers().get(j).isInStartingLineup()) {
                         playersToHaveChance.add(team.getListOfPlayers().get(j));
                     }
                 }
             }
 
             // Goalscoring mechanism
-            if (isGoalScored(playersToHaveChance, team, isBigChance, keeperSavingBonus, goalscorers)) {
+            if (isGoalScored(playersToHaveChance, isBigChance, keeperSavingBonus, goalscorers)) {
                 numberOfGoals++;
             }
             
@@ -223,11 +243,12 @@ public class MatchSimulation {
     }
 
     // TODO Handle sysouts if they are still needed in the later stages
-    private static boolean isGoalScored(List<Player> playersToHaveChance, Team team, boolean isBigChance, double keeperSavingBonus, List<String> goalscorers) {
+    private static boolean isGoalScored(List<Player> playersToHaveChance, boolean isBigChance, double keeperSavingBonus, List<String> goalscorers) {
+
         int numberOfPlayersWhoHaveChance = playersToHaveChance.size();
         Random ran = new Random();
-        double strikerAdHocBonus = Math.random()/10;
-        double keeperAdHocBonus = Math.random()/10;
+        double strikerAdHocBonus = Math.random() / 10;
+        double keeperAdHocBonus = Math.random() / 10;
         
         int index = ran.nextInt(numberOfPlayersWhoHaveChance);
         System.out.println("\nGolhelyzetbe kerult: " + playersToHaveChance.get(index).getPlayerName());
@@ -235,7 +256,7 @@ public class MatchSimulation {
         if (isBigChance) { // TODO itt annak erdekeben hogy a magasabb atlagu jatekosok elonye meglegyen, be lehetne vinni az OVERALL-t a helyzet szammal kepzett atlagba, es az vmivel igazsagosabb lenne
             if (Math.random() <=
                     playersToHaveChance.get(index).getChanceOfScoringFromBigOpportunity()
-                    + (playersToHaveChance.get(index).getOverall()/1000)
+                    + (playersToHaveChance.get(index).getOverall() / 1000)
                     + strikerAdHocBonus
                     - keeperAdHocBonus
                     - keeperSavingBonus) {
@@ -250,7 +271,7 @@ public class MatchSimulation {
         } else {
             if (Math.random() <=
                     playersToHaveChance.get(index).getChanceOfScoringFromSmallOpportunity()
-                    + (playersToHaveChance.get(index).getOverall()/1000)
+                    + (playersToHaveChance.get(index).getOverall() / 1000)
                     + strikerAdHocBonus
                     - keeperAdHocBonus
                     - (1.5 * keeperSavingBonus)) {
@@ -265,16 +286,18 @@ public class MatchSimulation {
         }
     }
     
-    private static double calculateKeeperSavingBonus(Team homeTeam) {
+    private static double calculateKeeperSavingBonus(Team team) {
+
         Player keeper = new Player();
-        for (int i = 0; i < homeTeam.getListOfPlayers().size(); i++) {
-            if (homeTeam.getListOfPlayers().get(i).getPosition().equals(GOALKEEPER)) {
-                keeper = homeTeam.getListOfPlayers().get(i);
+
+        for (int i = 0; i < team.getListOfPlayers().size(); i++) {
+            if (team.getListOfPlayers().get(i).getPosition().equals(GOALKEEPER) && team.getListOfPlayers().get(i).isInStartingLineup()) {
+                keeper = team.getListOfPlayers().get(i);
                 System.out.println("Kapus neve: " + keeper.getPlayerName());                
             }
         }
 
-        return keeper.getOverall()/200; // egyelore jo igy sztem, 90nes kapusnal ziccer 0,45, kis helyzet 0,67 korul van
+        return keeper.getOverall() / 200; // egyelore jo igy sztem, 90nes kapusnal ziccer 0,45, kis helyzet 0,67 korul van
     }
 
     /**
@@ -283,8 +306,12 @@ public class MatchSimulation {
     private static void handleFatigue(List<Player> playerList) {
 
         for (Player player : playerList) {
-            int randomNumber = (int) (Math.random() * (30 - 10)) + 10;
-            player.setStamina(player.getStamina() - randomNumber);
+            if (player.isInStartingLineup()) {
+                int randomNumber = (int) (Math.random() * (30 - 10)) + 10;
+                player.setStamina(player.getStamina() - randomNumber);
+            } else {
+                player.setStamina(100); // TODO megoldani, hogy ha hozzáadok az aktuálishoz egy számot, akkor az ne legyen több, mint 100
+            }
         }
     }
 
@@ -293,9 +320,9 @@ public class MatchSimulation {
      */
     private static void handleInjuries(List<Player> playerList) {
 
-        for (Player player : playerList) {
+        for (Player player : playerList) { // TODO az összes handle csak a kezdõkre fusson le és a legvégén mindenki legyen false!
 
-            if (Math.random() <= 0.01) { // too many injuries happened in case of 0.04
+            if (player.isInStartingLineup() && Math.random() <= 0.01) { // too many injuries happened in case of 0.04
                 player.setInjured(true);
 
                 System.out.println("SÉRÜLÉS:" + player.getPlayerName());
@@ -322,23 +349,24 @@ public class MatchSimulation {
     private static void handleYellowCards(List<Player> playerList) {
 
         for (Player player : playerList) {
+            if (player.isInStartingLineup()) {
+                boolean getsYellowCard = false;
+                double yellowCardChance = Math.random();
 
-            boolean getsYellowCard = false;
-            double yellowCardChance = Math.random();
+                if (player.getPosition() == GOALKEEPER && yellowCardChance < 0.05) {
+                    getsYellowCard = true;
+                } else if (player.getPosition() == DEFENDER && yellowCardChance < 0.15) {
+                    getsYellowCard = true;
+                } else if (player.getPosition() == MIDFIELDER && yellowCardChance < 0.05) {
+                    getsYellowCard = true;
+                } else if (player.getPosition() == FORWARD && yellowCardChance < 0.025) {
+                    getsYellowCard = true;
+                }
 
-            if (player.getPosition() == GOALKEEPER && yellowCardChance < 0.05) {
-                getsYellowCard = true;
-            } else if (player.getPosition() == DEFENDER && yellowCardChance < 0.15) {
-                getsYellowCard = true;
-            } else if (player.getPosition() == MIDFIELDER && yellowCardChance < 0.05) {
-                getsYellowCard = true;
-            } else if (player.getPosition() == FORWARD && yellowCardChance < 0.025) {
-                getsYellowCard = true;
-            }
-
-            if (getsYellowCard) {
-                player.increaseNumberOfYellowCards();
-                System.out.println("SÁRGA LAP: " + player.getPlayerName());
+                if (getsYellowCard) {
+                    player.increaseNumberOfYellowCards();
+                    System.out.println("SÁRGA LAP: " + player.getPlayerName());
+                }
             }
         }
     }
@@ -350,26 +378,34 @@ public class MatchSimulation {
     private static void handleRedCards(List<Player> playerList) {
 
         for (Player player : playerList) {
+            if (player.isInStartingLineup()) {
+                boolean getsRedCard = false;
+                double redCardChance = Math.random();
 
-            boolean getsRedCard = false;
-            double redCardChance = Math.random();
+                if (player.getPosition() == GOALKEEPER && redCardChance < 0.003) {
+                    getsRedCard = true;
+                } else if (player.getPosition() == DEFENDER && redCardChance < 0.01) {
+                    getsRedCard = true;
+                } else if (player.getPosition() == MIDFIELDER && redCardChance < 0.005) {
+                    getsRedCard = true;
+                } else if (player.getPosition() == FORWARD && redCardChance < 0.0025) {
+                    getsRedCard = true;
+                }
 
-            if (player.getPosition() == GOALKEEPER && redCardChance < 0.003) {
-                getsRedCard = true;
-            } else if (player.getPosition() == DEFENDER && redCardChance < 0.01) {
-                getsRedCard = true;
-            } else if (player.getPosition() == MIDFIELDER && redCardChance < 0.005) {
-                getsRedCard = true;
-            } else if (player.getPosition() == FORWARD && redCardChance < 0.0025) {
-                getsRedCard = true;
-            }
-
-            if (getsRedCard) {
-                player.increaseNumberOfRedCards();
-                player.setExcluded(true);
-                System.out.println("KIÁLLÍTÁS: " + player.getPlayerName());
+                if (getsRedCard) {
+                    player.increaseNumberOfRedCards();
+                    player.setExcluded(true);
+                    System.out.println("KIÁLLÍTÁS: " + player.getPlayerName());
+                }
             }
         }
+    }
+
+    private static void increasesPlayersMatchNumber(List<Player> playerList) {
+        playerList
+                .stream()
+                .filter(Player::isInStartingLineup)
+                .forEach(Player::increaseNumberOfMatches);
     }
 
 }

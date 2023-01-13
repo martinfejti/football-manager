@@ -2,7 +2,6 @@ package engine;
 
 import seasons.TestSeason;
 import simulator.MatchSimulation;
-import seasons.SerieA2006Season;
 import util.ResultLogger;
 
 public class Main {
