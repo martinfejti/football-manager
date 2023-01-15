@@ -14,5 +14,7 @@ public enum SpecificPlayerPosition {
     CENTRAL_ATTACKING_MIDFIELDER,
     LEFT_WINGER,
     RIGHT_WINGER,
-    STRIKER
+    STRIKER,
+    LEFT_STRIKER,
+    RIGHT_STRIKER
 }

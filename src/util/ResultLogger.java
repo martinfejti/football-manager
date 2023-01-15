@@ -1,11 +1,10 @@
 package util;
 
-import data.PlayerPosition;
+import data.Player;
+import data.Season;
+import data.Team;
 import simulator.MatchResultInfo;
 import simulator.PreMatchData;
-import data.Season;
-import data.Player;
-import data.Team;
 
 import java.util.Comparator;
 
