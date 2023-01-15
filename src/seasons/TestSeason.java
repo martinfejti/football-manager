@@ -89,6 +89,31 @@ public class TestSeason {
                 )),
                 new Team("Chelsea", THREE_FOUR_THREE, Arrays.asList(
                         new Player("Édouard Mendy", GOALKEEPER, SpecificPlayerPosition.GOALKEEPER, 86, 0, 0),
+                        new Player("Kepa Arrizabalaga", GOALKEEPER, SpecificPlayerPosition.GOALKEEPER, 80, 0, 0),
+                        new Player("Kalidou Koulibaly", DEFENDER, SpecificPlayerPosition.LEFT_CENTRAL_BACK, 87, 0.25, 0.20),
+                        new Player("Thiago Silva", DEFENDER, SpecificPlayerPosition.CENTRAL_BACK, 86, 0.40, 0.65),
+                        new Player("César Azpilicueta", DEFENDER, SpecificPlayerPosition.RIGHT_CENTRAL_BACK, 82, 0.46, 0.60),
+                        new Player("Wesley Fofana", DEFENDER, SpecificPlayerPosition.LEFT_CENTRAL_BACK, 79, 0.29, 0.37),
+                        new Player("Benoit Badiashile", DEFENDER, SpecificPlayerPosition.CENTRAL_BACK, 77, 0.38, 0.47),
+                        new Player("Trevor Chalobah", DEFENDER, SpecificPlayerPosition.RIGHT_CENTRAL_BACK, 76, 0.44, 0.50),
+                        new Player("Ben Chillwell", MIDFIELDER, SpecificPlayerPosition.LEFT_WINGER, 82, 0.58, 0.47),
+                        new Player("Marc Cucurella", MIDFIELDER, SpecificPlayerPosition.LEFT_WINGER, 81, 0.68, 0.65),
+                        new Player("Reece James", MIDFIELDER, SpecificPlayerPosition.RIGHT_WINGER, 84, 0.66, 0.69),
+                        new Player("Lewis Hall", MIDFIELDER, SpecificPlayerPosition.RIGHT_WINGER, 61, 0.49, 0.52),
+                        new Player("Jorginho", MIDFIELDER, SpecificPlayerPosition.RIGHT_CENTRAL_MIDFIELDER, 85, 0.64, 0.62),
+                        new Player("Mateo Kovacic", MIDFIELDER, SpecificPlayerPosition.LEFT_CENTRAL_MIDFIELDER, 84, 0.61, 0.75),
+                        new Player("Mason Mount", MIDFIELDER, SpecificPlayerPosition.RIGHT_CENTRAL_MIDFIELDER, 84, 0.81, 0.83),
+                        new Player("Ngolo Kanté", MIDFIELDER, SpecificPlayerPosition.LEFT_CENTRAL_MIDFIELDER, 89, 0.65, 0.65),
+                        new Player("Hakim Ziyech", FORWARD, SpecificPlayerPosition.RIGHT_STRIKER, 83, 0.73, 0.80),
+                        new Player("Raheem Sterling", FORWARD, SpecificPlayerPosition.RIGHT_STRIKER, 86, 0.82, 0.80),
+                        new Player("Joao Felix", FORWARD, SpecificPlayerPosition.LEFT_STRIKER, 83, 0.79, 0.81),
+                        new Player("Christian Pulisic", FORWARD, SpecificPlayerPosition.LEFT_STRIKER, 82, 0.74, 0.57),
+                        new Player("Pierre-Emerick Aubameyang", FORWARD, SpecificPlayerPosition.STRIKER, 84, 0.86, 0.79),
+                        new Player("Kai Havertz", FORWARD, SpecificPlayerPosition.STRIKER, 84, 0.81, 0.78)
+                ))
+                /*
+                new Team("Chelsea", THREE_FOUR_THREE, Arrays.asList(
+                        new Player("Édouard Mendy", GOALKEEPER, SpecificPlayerPosition.GOALKEEPER, 86, 0, 0),
                         new Player("Reece James", DEFENDER, SpecificPlayerPosition.RIGHT_BACK, 84, 0.66, 0.69),
                         new Player("Thiago Silva", DEFENDER, SpecificPlayerPosition.RIGHT_CENTRAL_BACK, 86, 0.40, 0.65),
                         new Player("Kalidou Koulibaly", DEFENDER, SpecificPlayerPosition.LEFT_CENTRAL_BACK, 87, 0.25, 0.20),
@@ -111,6 +136,8 @@ public class TestSeason {
                         new Player("Armando Broja", FORWARD, SpecificPlayerPosition.STRIKER, 75, 0.77, 0.61),
                         new Player("Joao Felix", FORWARD, SpecificPlayerPosition.LEFT_WINGER, 83, 0.79, 0.81)
                 ))
+
+                 */
         ));
     }
 
